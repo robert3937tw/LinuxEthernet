@@ -9,7 +9,7 @@
 #include <netinet/in.h>
 #include <strings.h>
 #include <stdio.h>
-#define BUFFER_NUM 1460
+#define BUFFER_NUM 14641
 #define SERVER_PORT 40050
 #define SERVER_IP "192.168.0.21"
 
@@ -26,7 +26,7 @@ int main()
 	dest.sin_port = htons(SERVER_PORT);
 	dest.sin_addr.s_addr = inet_addr(SERVER_IP);
 
-	while(1){
+	//while(1){
 
 		/* create socket */
 		sockfd = socket(PF_INET, SOCK_STREAM, 0);
@@ -37,14 +37,16 @@ int main()
 		/* Receive message from the server and print to screen */
 		bzero(buffer, BUFFER_NUM);
 		send(sockfd,resp,sizeof(resp),0);
-		recv(sockfd, buffer, sizeof(buffer), 0);
-		RX_byte = sizeof(buffer);
-		if(RX_byte == BUFFER_NUM) num++;	
+		printf("send complete.\n");
+		RX_byte=recv(sockfd, buffer, sizeof(buffer), 0);
+		printf("recv complete.\n");
+		
+		//if(RX_byte == BUFFER_NUM) num++;	
 		printf("receive from server: %s RX bytes:%d count:%d\n", buffer,RX_byte,num);
 
 		/* Close connection */
 		close(sockfd);
-	}//while
+	//}//while
 
 	return 0;
 }
