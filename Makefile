@@ -10,7 +10,7 @@ EXTRA_LIBS =	lib/libipu_sf.a \
 				lib/libvpu_sf.a
 
 ifeq ($(PLATFORM), IMAX6_PLATFORM)
-	CC = $(CROSS)gcc
+	CC = $(CROSS)g++
 	CC_FLAGS = -c -O3 -std=c99 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -pthread $(EXTRA_FLAGS)
 	LINK_FLAGS = -o $(EXEC) -pthread -lm $(EXTRA_FLAGS)
 
@@ -19,7 +19,8 @@ ifeq ($(PLATFORM), IMAX6_PLATFORM)
 else
 	CC = gcc
 	CC_FLAGS = -c -O3 -std=c99 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -pthread
-	LINK_FLAGS = -o $(EXEC) -pthread -lm
+	#LINK_FLAGS = -o $(EXEC) -pthread -lm
+	LINK_FLAGS = -o $(EXEC)
 endif
 
 
@@ -36,6 +37,10 @@ all:	$(OBJS)
 clean: 	
 	$(DEL) *.o *.out *~
 	$(DEL) $(EXEC)
+
+rebuild:
+	make clean
+	make all
 
 .SUFFIXES: .o .c
 

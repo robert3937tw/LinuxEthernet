@@ -19,15 +19,15 @@
  */
  
 /******* Performance test ***********/
-#include <windows.h>
+//#include <windows.h>
 #define timeNum 5
-#define timerStart(x)	QueryPerformanceCounter(&start[x]);	
-#define timerStop(x)	QueryPerformanceCounter(&end[x]);TimeSave[x] = 1000*(end[x].QuadPart-start[x].QuadPart)/(double)(timeus.QuadPart);
+#define timerStart(x)	//QueryPerformanceCounter(&start[x]);	
+#define timerStop(x)	//QueryPerformanceCounter(&end[x]);TimeSave[x] = 1000*(end[x].QuadPart-start[x].QuadPart)/(double)(timeus.QuadPart);
 /******* Performance test ***********/
 
 
 /********* Extern Variables *********/
-extern LARGE_INTEGER start[timeNum], end[timeNum], timeus;				
+//extern LARGE_INTEGER start[timeNum], end[timeNum], timeus;				
 extern double TimeSave[timeNum];
 
 struct CARINFO

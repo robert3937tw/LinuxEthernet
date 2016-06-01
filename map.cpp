@@ -57,7 +57,7 @@ int main(void)
 	unsigned char globalmap[14641]={0};              //the whole map is now.
 	int test[3660];
 //=====> return from Aurix <===============
-	CARINFO CarInfo;
+	//CARINFO CarInfo;
 	unsigned int rxBytes,diff_bytes=0,count=0;
 		
 	double max=0,min=999,total=0;
@@ -83,8 +83,8 @@ int main(void)
 	robotviewsita=0;
 	
 //===============> Init the Ethernet <===============
-	TCPclientInit();	
-	QueryPerformanceFrequency(&timeus);
+	//TCPclientInit();	
+	//QueryPerformanceFrequency(&timeus);
 //===============> Init the Ethernet <===============
 while(count<1000){
 	//get data//
@@ -129,10 +129,10 @@ timerStart(2);
 		test[i]=i;
 	memcpy(globalmap, test,sizeof(test));
 	*/
-	rxBytes = TCPclientCommunication(globalmap, sizeof(globalmap), (unsigned char*)&CarInfo);
+	//rxBytes = TCPclientCommunication(globalmap, sizeof(globalmap), (unsigned char*)&CarInfo);
 	
 timerStop(2);
-	
+	/*
 	printf("RX : %u\n",rxBytes);
 	printf("Car x:%d y:%d angle:%.3f\n",CarInfo.x, CarInfo.y, CarInfo.angle);
 	printf("send:%.3lf ms, recv:%.3lf ms, ",TimeSave[0],TimeSave[1]);
@@ -143,7 +143,7 @@ timerStop(2);
 		total+=TimeSave[2];
 		printf("max:%.3lf ms, min:%.3lf ms, avg:%.3lf ms, count:%d\n",max,min,(double)(total/(count-1)),count);
 	}	
-			
+	*/		
 //===================================> send map and receive from Aurix <=======================
 	
 	//test write//
