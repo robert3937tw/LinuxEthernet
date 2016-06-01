@@ -15,7 +15,11 @@
 
 int main()
 {
-	int sockfd,i,RX_byte,num=0;		
+	int 	sockfd,
+		i,
+		TX_byte,
+		RX_byte,
+		num=0;		
 	struct sockaddr_in dest;
 	char buffer[BUFFER_NUM];
 	char resp[BUFFER_NUM]={0};//"client_ack";
@@ -36,13 +40,16 @@ int main()
 
 		/* Receive message from the server and print to screen */
 		bzero(buffer, BUFFER_NUM);
-		send(sockfd,resp,sizeof(resp),0);
+
+		TX_byte=send(sockfd,resp,sizeof(resp),0);
 		printf("send complete.\n");
+
 		RX_byte=recv(sockfd, buffer, sizeof(buffer), 0);
 		printf("recv complete.\n");
 		
 		//if(RX_byte == BUFFER_NUM) num++;	
-		printf("receive from server: %s RX bytes:%d count:%d\n", buffer,RX_byte,num);
+		printf("receive from server: %x %x %x %x \n", buffer[0], buffer[1], buffer[2], buffer[3]);
+		printf("TX bytes:%d RX bytes:%d\n",TX_byte,RX_byte);
 
 		/* Close connection */
 		close(sockfd);
