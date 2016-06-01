@@ -14,7 +14,12 @@
  *
  *
  */
- 
+
+/* define something */ 
+#define TCPtest
+
+
+
 /* For Linux pause */
 #define PAUSE printf("Press Enter key to continue..."); fgetc(stdin);  
 
@@ -36,12 +41,14 @@ struct CARINFO
 		
 };
 
-
 /********* Extern Variables *********/
+
+
+
 
 int TCPclientInit(void);
 unsigned int TCPclientCommunication(unsigned char *sendbuf, int sendbufLen, unsigned char *recvdata);
-int TCPtest(void);
+
 
 
 

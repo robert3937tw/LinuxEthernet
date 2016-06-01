@@ -146,7 +146,7 @@ timerStop(1);
 	return iResult;
 }
 
-
+#ifdef TCPtest
 int main(void){
 	
 	struct CARINFO CarInfo;
@@ -191,6 +191,6 @@ timerStop(2);
 	PAUSE;
     return 0;
 }
-
+#endif
 
 
