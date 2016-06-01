@@ -1,36 +1,29 @@
 /*
  * Function version
+ * For AURIX version
+ *
+ * remote ip & port : 192.168.0.21 : 40050  AURIX
+ * local  ip & port : 192.168.0.20 : 50001  PC
  * 
- * 1.在 Windows 使用 Socket 需要 link Winsock Library。[client端]
- *   link方式：
- *   專案的「屬性」->「組態屬性」->「連結器」->「輸入」->「其他相依性」加入 wsock32.lib 或  Ws2_32.lib
- *   也可以在程式中，使用以下方式加入
- *   #pragma comment(lib, "wsock32.lib") 或 #pragma comment(lib, "Ws2_32.lib")
- * 
- * 2.wsock32.lib 和 Ws2_32.lib 的區別：
- *   wsock32.lib 是較舊的 1.1 版本，Ws2_32.lib 是較新的 2.0 版本。
- *   wsock32.lib 跟 winsock.h 一起使用，Ws2_32.lib 跟 WinSock2.h 一起使用。
- *   winsock.h 和 WinSock2.h 不能同時使用，WinSock2.h 是用來取代 winsock.h，而不是擴展 winsock.h。 
  * ================================20160428==================================================  
- * 3. Max. 1460 bytes
- * 4. Add package_struct, and float,int,.etc array in structure can send and receive correctly
+ * 1. Max. 1460 bytes
+ * 2. Add package_struct, and float,int,.etc array in structure can send and receive correctly
  *
  *
  */
 
-#define WIN32_LEAN_AND_MEAN
-#include"TCPclient.h"
-#include <winsock2.h>
-#include <ws2tcpip.h>
+ 
+ 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <strings.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 
-
-// Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
-#pragma comment (lib, "Ws2_32.lib")
-#pragma comment (lib, "Mswsock.lib")
-#pragma comment (lib, "AdvApi32.lib")
+#include"TCPclient.h"
 
 //#define TX_BUFLEN 900	//max 1460 but "Aurix:  " occupi 8 bytes
 #define RX_BUFLEN 100
@@ -51,6 +44,8 @@ LARGE_INTEGER start[timeNum], end[timeNum], timeus;
 double TimeSave[timeNum];
 /********* Extern Variables *********/
 
+
+
 /********* Global Variables *********/
 int i;
 //char *sendbuf ;
@@ -59,8 +54,10 @@ int i;
 int iResult;
 int recvbuflen = RX_BUFLEN;
 
-WSADATA wsaData;
+
 SOCKET ConnectSocket = INVALID_SOCKET;
+
+struct sockaddr_in dest;
 struct addrinfo *result = NULL,
                 *ptr = NULL,
                 hints;
@@ -75,19 +72,12 @@ int TCPclientInit(void){
 	//memset(recvbuf,0,sizeof(recvbuf));
 	//memset(sendbuf,0,sizeof(sendbuf));
 
-    // Initialize Winsock
-    iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
-    if (iResult != 0) {
-        printf("WSAStartup failed with error: %d\n", iResult);
-		system("pause");
-        return 2;
-    }
+	/* initialize value in dest */
+	bzero(&dest, sizeof(dest));
+	dest.sin_family = PF_INET;
+	dest.sin_port = htons(SERVER_PORT);
+	dest.sin_addr.s_addr = inet_addr(SERVER_IP);   
 
-    ZeroMemory( &hints, sizeof(hints) );
-    hints.ai_family = AF_UNSPEC;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_protocol = IPPROTO_TCP;	
-	
 }
 
 unsigned int TCPclientCommunication(unsigned char *sendbuf, int sendbufLen, unsigned char *recvdata){
