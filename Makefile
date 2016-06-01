@@ -20,14 +20,14 @@ else
 	CC = gcc
 	CC_FLAGS = -c -O3 -std=c99 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -pthread
 	#LINK_FLAGS = -o $(EXEC) -pthread -lm
-	LINK_FLAGS = -o $(EXEC)
+	LINK_FLAGS = -o $(EXEC)  -lrt 
 endif
 
 
 DEL = rm -rf
 
 OBJS =	\
-		client.c \
+		TCPclient.c \
 		
 
 
