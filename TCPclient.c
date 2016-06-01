@@ -75,7 +75,7 @@ unsigned int TCPclientCommunication(unsigned char *sendbuf, int sendbufLen, unsi
 		PAUSE;
         	return 4;
         }
-	printf("Create socket success!\n");
+	//printf("Create socket success!\n");
 
 	/* Connecting to server */
 	iResult=connect(sockfd, (struct sockaddr*)&dest, sizeof(dest));
@@ -85,7 +85,7 @@ unsigned int TCPclientCommunication(unsigned char *sendbuf, int sendbufLen, unsi
 		PAUSE;
         	return 5;
         }
-	printf("Connecting to server success!\n");
+	//printf("Connecting to server success!\n");
 	
     	/* Send an initial buffer */
 timerStart(0);
@@ -97,9 +97,8 @@ timerStop(0);
 		PAUSE;
         	return 6;
     	}
-	printf("send complete.\n");
 	
-    	printf("Bytes sent: %d size:%d \n", iResult,sendbufLen);
+    	//printf("Bytes sent: %d size:%d \n", iResult,sendbufLen);
 	//for(i=0;i<iResult;i+=4)
 	//		printf("%X %X %X %X | ",*(sendbuf+i),*(sendbuf+i+1),*(sendbuf+i+2),*(sendbuf+i+3));
 
@@ -116,6 +115,8 @@ timerStop(0);
     // Receive until the peer closes the connection
 	recvdataLen=0;
 timerStart(1);
+	iResult = recv(sockfd, (char*)recvbuf, recvbuflen, 0);
+/*
 	do {
 	        iResult = recv(sockfd, (char*)recvbuf, recvbuflen, 0);
 	        if ( iResult > 0 ){
@@ -129,18 +130,20 @@ timerStart(1);
 			
 		}//iResult > 0
 	        else if ( iResult == 0 ){
-	        	printf("Connection closed\n");
-			printf("Total bytes received: %u \n", recvdataLen);
+	        	//printf("Connection closed\n");
+			//printf("Total bytes received: %u \n", recvdataLen);
 		}
         	else
             		printf("recv failed with error");
 
     } while( iResult > 0 );
+*/
 timerStop(1);
 
-    // Close the SOCKET
-    close(sockfd);
-	return recvdataLen; 		
+    	// Close the SOCKET
+    	close(sockfd);
+	//return recvdataLen; 		
+	return iResult;
 }
 
 
@@ -154,18 +157,9 @@ int main(void){
 
 	double max=0,min=999,total=0;
 
-timerStart(3);	
-	sleep(1);
-timerStop(3);	
-	printf("test 1 second:%.3lf ms\n",TimeSave[3]);
-
-
-
 	TCPclientInit();
-    	
-	
-		
-while(count<10000){
+  		
+while(count<1000){
 	for(i=0;i<14641;i++)
 		globalmap[i]=0;
 
@@ -182,15 +176,15 @@ timerStop(2);
 	printf("Car x:%d y:%d angle:%.3f\n",CarInfo.x, CarInfo.y, CarInfo.angle);
 	printf("send:%.3lf ms, recv:%.3lf ms, ",TimeSave[0],TimeSave[1]);
 	printf("Total:%.3lf ms\n", TimeSave[2]);
-	if(++count>1){
+	if(++count>0){
 		if(TimeSave[2]>=max) max=TimeSave[2];
 		if(TimeSave[2]<=min) min=TimeSave[2];
 		total+=TimeSave[2];
-		printf("max:%.3lf ms, min:%.3lf ms, avg:%.3lf ms, count:%d\n",max,min,(double)(total/(count-1)),count);
+		printf("max:%.3lf ms, min:%.3lf ms, avg:%.3lf ms, count:%d\n",max,min,(double)(total/(count)),count);
 	}
 
 
-	PAUSE;
+	//PAUSE;
 	
 }//while    
 
